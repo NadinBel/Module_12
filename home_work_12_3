@@ -1,0 +1,71 @@
+import runner_and_tournament
+import unittest
+
+class RunnerTest(unittest.TestCase):
+    is_frozen = False
+    @unittest.skipIf(is_frozen, 'Тесты в этом кейсе заморожены')
+    def test_walk(self):
+        horse = runner.Runner('Lilia')
+        for x in range(10):
+            horse.walk()
+        self.assertEqual(horse.distance, 50)
+
+    @unittest.skipIf(is_frozen, 'Тесты в этом кейсе заморожены')
+    def test_run(self):
+        grayhound = runner.Runner('Tuzik')
+        for x in range(10):
+            grayhound.run()
+        self.assertEqual(grayhound.distance, 100)
+
+    @unittest.skipIf(is_frozen, 'Тесты в этом кейсе заморожены')
+    def test_challenge(self):
+        pig = runner.Runner('Rose')
+        for x in range(10):
+            pig.walk()
+        geopard = runner.Runner('Murzik')
+        for x in range(10):
+            geopard.run()
+        self.assertNotEqual(pig.distance, geopard.distance)
+
+class TournamentTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        setattr(cls, 'all_result', dict())
+        return
+    def setUp(self):
+        self.runner_1 = runner_and_tournament.Runner('Усэйн', 10)
+        self.runner_2 = runner_and_tournament.Runner('Андрей', 9)
+        self.runner_3 = runner_and_tournament.Runner('Ник', 3)
+    @classmethod
+    def tearDownClass(cls):
+        my_dict = cls.all_result
+        for key, value in my_dict.items():
+            for place, obj in value.items():
+                value.update({place: obj.name})
+            print(value)
+
+    def test_runner_1(self):
+        self.winner = runner_and_tournament.Tournament(90, self.runner_1, self.runner_3)
+        self.winner.participants = sorted(self.winner.participants, key=lambda x: x.speed, reverse=True)
+        tour_dict = self.winner.start()
+        TournamentTest.all_result.update({'1': tour_dict})
+        self.assertTrue(bool(tour_dict.get(max(tour_dict)) == 'Ник'))
+
+
+    def test_runner_2(self):
+        self.winner = runner_and_tournament.Tournament(90, self.runner_2, self.runner_3)
+        self.winner.participants = sorted(self.winner.participants, key=lambda x: x.speed, reverse=True)
+        tour_dict = self.winner.start()
+        TournamentTest.all_result.update({'2': tour_dict})
+        self.assertTrue(bool(tour_dict.get(max(tour_dict)) == 'Ник'))
+
+
+    def test_runner_3(self):
+        self.winner = runner_and_tournament.Tournament(90, self.runner_2, self.runner_1, self.runner_3)
+        self.winner.participants = sorted(self.winner.participants, key=lambda x: x.speed, reverse=True)
+        tour_dict = self.winner.start()
+        TournamentTest.all_result.update({'3': tour_dict})
+        self.assertTrue(bool(tour_dict.get(max(tour_dict)) == 'Ник'))
+
+if __name__ == '__main__':
+    unittest.main()
