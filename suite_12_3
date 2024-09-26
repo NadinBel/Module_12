@@ -1,0 +1,10 @@
+import unittest
+import home_work_12_1
+import home_work_12_2
+
+full_test = unittest.TestSuite()
+full_test.addTest(unittest.TestLoader().loadTestsFromTestCase(home_work_12_1.RunnerTest))
+full_test.addTest(unittest.TestLoader().loadTestsFromTestCase(home_work_12_2.TournamentTest))
+
+runner = unittest.TextTestRunner(verbosity=2)
+runner.run(full_test)
