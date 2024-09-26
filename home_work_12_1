@@ -1,0 +1,27 @@
+import runner
+import unittest
+
+class RunnerTest(unittest.TestCase):
+    def test_walk(self):
+        horse = runner.Runner('Lilia')
+        for x in range(10):
+            horse.walk()
+        self.assertEqual(horse.distance, 50)
+
+    def test_run(self):
+        grayhound = runner.Runner('Tuzik')
+        for x in range(10):
+            grayhound.run()
+        self.assertEqual(grayhound.distance, 100)
+
+    def test_challenge(self):
+        pig = runner.Runner('Rose')
+        for x in range(10):
+            pig.walk()
+        geopard = runner.Runner('Murzik')
+        for x in range(10):
+            geopard.run()
+        self.assertNotEqual(pig.distance, geopard.distance)
+
+if __name__ == "__main__":
+    unittest.main()
